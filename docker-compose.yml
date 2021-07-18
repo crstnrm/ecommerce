@@ -1,0 +1,31 @@
+version: '3.7'
+
+services:
+  postgres:
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: Dockerfile.postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - ${POSTGRES_PORT}:5432
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/code
+    env_file:
+      - ./.env
+    ports:
+      - 8000:8000
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:

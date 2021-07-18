@@ -1,0 +1,8 @@
+# Define use image
+FROM postgres:10
+
+RUN localedef -i es_CO -c -f UTF-8 -A /usr/share/locale/locale.alias es_CO.UTF-8
+ENV LANG es_CO.utf8
+
+# Define primary command
+CMD ["postgres",  "-c", "log_statement=all"]

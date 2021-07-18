@@ -1,0 +1,43 @@
+# Define use image
+FROM python:3.8-slim
+
+# Keeps Python from generating .pyc files in the container
+ENV PYTHONUNBUFFERED=1
+
+# Turns off buffering for easier container logging
+ENV PYTHONDONTWRITEBYTECODE=1
+
+ENV APP_HOME=/code
+
+# Create user app
+RUN groupadd user && useradd --create-home --home-dir /home/user -g user user
+
+# Create folder to avoid permission issues
+RUN mkdir -p $APP_HOME && chown user:user $APP_HOME
+
+# Specify work directory
+WORKDIR $APP_HOME
+
+RUN apt-get update && apt install -y \
+    build-essential \
+    libpq-dev \
+    python3-dev \
+    netcat
+
+# Install dependencies
+COPY ./requirements ./requirements
+RUN pip install --upgrade pip \
+    && pip install -r ./requirements/development.txt
+
+# Copy files to work directory
+COPY ./postgres-healthy.sh ./
+COPY ./ ./
+
+# Switching to a non-root user
+USER user
+
+# Run postgres-healthy.sh
+ENTRYPOINT ["./postgres-healthy.sh"]
+
+# Define primary command
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
