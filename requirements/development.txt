@@ -1,0 +1,13 @@
+-r common.txt
+django-extensions
+bpython
+flake8
+safety
+debugpy
+isort
+pytest-django
+pytest-bdd
+pytest-env
+mixer
+pytest-cov
+pytest-pythonpath
