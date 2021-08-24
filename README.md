@@ -1,5 +1,9 @@
 # ecommerce
 
+### Requirements
+
+You have to have docker installed before to run this project easily.
+
 ## Installation
 
 1. Create .env file and paste the following environment variables.
