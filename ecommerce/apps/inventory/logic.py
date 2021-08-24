@@ -6,7 +6,7 @@ from ecommerce.core.logic import BaseLogic
 
 
 class ProductLogic(BaseLogic):
-    
+
     def __init__(self):
         super().__init__()
 
@@ -14,25 +14,25 @@ class ProductLogic(BaseLogic):
 
 
 class MovementLogic(BaseLogic):
-    
+
     def __init__(self):
         super().__init__()
 
         self.model = Movement
 
     def create(
-        self, 
-        product_id: int, 
-        quantity: int, 
-        type: int, 
+        self,
+        product_id: int,
+        quantity: int,
+        type: int,
         **kwargs
     ) -> Movement:
 
         if type == MovementType.INGRESS.value:
             return super().create(
-                product_id=product_id, 
-                quantity=quantity, 
-                type=type, 
+                product_id=product_id,
+                quantity=quantity,
+                type=type,
                 **kwargs
             )
 
@@ -43,11 +43,11 @@ class MovementLogic(BaseLogic):
             )
 
         return super().create(
-            product_id=product_id, 
-            quantity=quantity, 
-            type=type, 
+            product_id=product_id,
+            quantity=quantity,
+            type=type,
             **kwargs
         )
 
-    def get_balance_by_product_id(self, product_id: str):
-        pass
+    def get_balance_by_product_id(self, product_id: str) -> int:
+        raise NotImplementedError

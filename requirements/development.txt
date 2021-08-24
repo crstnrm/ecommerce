@@ -11,3 +11,4 @@ pytest-env
 mixer
 pytest-cov
 pytest-pythonpath
+django-rest-swagger

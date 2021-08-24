@@ -19,6 +19,9 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from rest_framework_swagger.views import get_swagger_view
+
+schema_view = get_swagger_view(title='Rest API Document')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,5 +30,7 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     path('orders/', include('orders.urls')),
-    path('shipments/', include('shipments.urls'))
+    path('shipments/', include('shipments.urls')),
+
+    path('documentation/', schema_view),
 ]
