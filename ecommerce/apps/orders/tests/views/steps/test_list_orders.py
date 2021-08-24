@@ -21,7 +21,7 @@ def login(scenario, mock_user):
     client = APIClient()
     data = {
         'username': mock_user.username,
-        'password': '1234',
+        'password': mock_user.plain_password,
     }
     response = client.post(TOKEN_ENDPOINT, data, format='json')
     body = response.json()
@@ -30,11 +30,7 @@ def login(scenario, mock_user):
 
 @given('There are several orders created')
 def create_orders(db):
-    return [
-        mixer.blend(Order),
-        mixer.blend(Order),
-        mixer.blend(Order)
-    ]
+    mixer.cycle(3).blend(Order)
 
 
 @when('I list the orders')
@@ -43,7 +39,7 @@ def list_orders(scenario):
     client = APIClient()
     client.credentials(HTTP_AUTHORIZATION=f'Bearer {token}')
     scenario['response'] = client.get(ORDERS_ENDPOINT, format='json')
-    
+
 
 @then('A data is displayed in the screen')
 def validate_process(scenario):
@@ -57,4 +53,3 @@ def validate_process(scenario):
     assert orders_len == body['total_records']
     assert body['offset'] == 0
     assert body['limit'] == 3
-    

@@ -7,7 +7,10 @@ class BaseAPIView(APIView):
 
     def get_permissions(self):
         """Instance and returns the list of permissions required by a view."""
-        
-        self.permission_classes = \
-            (self.permission_classes or []) + self.base_permission_classes
+
+        permissions = self.base_permission_classes
+        if self.permission_classes:
+            permissions.extend(self.permission_classes)
+
+        self.permission_classes = permissions
         return super().get_permissions()

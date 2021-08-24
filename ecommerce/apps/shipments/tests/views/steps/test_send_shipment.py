@@ -23,7 +23,7 @@ def login(scenario, mock_user):
     client = APIClient()
     data = {
         'username': mock_user.username,
-        'password': '1234',
+        'password': mock_user.plain_password,
     }
     response = client.post(TOKEN_ENDPOINT, data, format='json')
     body = response.json()
@@ -41,15 +41,15 @@ def create_shipment(db, mock_order):
 
 
 @when('I send the shipment')
-def send_shipment(scenario, mock_shipment):
+def send_shipment(mock_send_communication, scenario, mock_shipment):
     token = scenario['token']
     client = APIClient()
     client.credentials(HTTP_AUTHORIZATION=f'Bearer {token}')
     scenario['response'] = client.post(
-        SEND_SHIPMENT_ENDPOINT.format(shipment_id=mock_shipment.id), 
+        SEND_SHIPMENT_ENDPOINT.format(shipment_id=mock_shipment.id),
         format='json'
     )
-    
+
 
 @then('A successful message is returned')
 def validate_process(scenario, mock_shipment):
