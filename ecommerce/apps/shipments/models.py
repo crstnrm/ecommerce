@@ -5,15 +5,15 @@ from ecommerce.core.models import BaseModel
 
 class Shipment(BaseModel):
     order = models.ForeignKey(
-        'orders.Order', 
-        related_name='shipments', 
+        'orders.Order',
+        related_name='shipments',
         on_delete=models.PROTECT
     )
     provider = models.ForeignKey(
-        'Provider', 
+        'Provider',
         related_name='shipments',
-        on_delete=models.PROTECT, 
-        null=True, 
+        on_delete=models.PROTECT,
+        null=True,
         blank=True
     )
     status = models.IntegerField(default=ShipmentStatus.CREATED.value)
@@ -21,16 +21,16 @@ class Shipment(BaseModel):
 
 class ShipmentProduct(BaseModel):
     shipment = models.ForeignKey(
-        'Shipment', 
+        'Shipment',
         related_name='products',
         on_delete=models.PROTECT
     )
     product = models.ForeignKey(
-        'inventory.Product', 
+        'inventory.Product',
         related_name='shipments',
         on_delete=models.PROTECT
     )
-    status = models.IntegerField(default=ShipmentProductStatus.CREATED.value)
+    status = models.IntegerField(default=ShipmentStatus.CREATED)
 
 
 class Provider(BaseModel):

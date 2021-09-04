@@ -28,11 +28,16 @@ class ShipmentLogic(BaseLogic):
 
         return super().create(order_id=order_id, **kwargs)
 
-    def send_shipment(self, shipment_id:int) -> None:
+    def send_shipment(self, shipment_id: int) -> None:
 
         shipment = self.find(id=shipment_id).annotate(
             receptor=F('order__user__email')
         ).first()
+        if not shipment:
+            raise ValidationError(
+                f'Shipment {shipment_id} does not exits.'
+            )
+
         if shipment.status != ShipmentStatus.CREATED.value:
             raise ValidationError(
                 f'Shipment {shipment_id} can not be shipped.'
